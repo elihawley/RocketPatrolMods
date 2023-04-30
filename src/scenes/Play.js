@@ -39,7 +39,7 @@ class Play extends Phaser.Scene {
         });
 
         this.p1Score = 0;
-        let scoreConfig = {
+        this.scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#F3B141',
@@ -51,18 +51,45 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100,
         };
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, this.scoreConfig);
 
         // game over
         this.gameOver = false;
 
         // clock
-        scoreConfig.fixedWidth = 0;
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER', scoreConfig).setOrigin(.5);
-            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(.5);
+        this.scoreConfig.fixedWidth = 0;
+        this.timeRemaining = game.settings.gameTimer;
+        this.clock = this.time.delayedCall(this.timeRemaining, () => {
+            this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER', this.scoreConfig).setOrigin(.5);
+            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to Restart or <- for Menu', this.scoreConfig).setOrigin(.5);
             this.gameOver = true;
         }, null, this);
+        let timeConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100,
+        };
+        this.timeRemainingText = this.add.text(game.config.width - 2*(borderUISize + borderPadding) - (borderUISize + borderPadding * 2), borderUISize + borderPadding * 2, Math.round(this.timeRemaining / 1000), timeConfig);
+        this.timeRemainingClock = this.time.addEvent({
+            callback: () => {
+                if (this.gameOver) {
+                    this.timeRemainingClock.remove();
+                }
+
+                this.timeRemaining -= 100;
+                this.add.text(game.config.width - 2*(borderUISize + borderPadding) - (borderUISize + borderPadding * 2), borderUISize + borderPadding * 2, Math.round(this.timeRemaining / 1000), timeConfig);  
+            },
+            callbackScope: this,
+            delay: 100,
+            loop: true,
+        });
         
         // explosion particles
         this.particleEmitter = this.add.particles(0, 0, 'explosion_particle', {
@@ -136,6 +163,14 @@ class Play extends Phaser.Scene {
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
 
+        this.timeRemaining += 2 * 1000;
+        this.time.removeEvent(this.clock);
+        this.clock = this.time.delayedCall(this.timeRemaining, () => {
+            this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER', this.scoreConfig).setOrigin(.5);
+            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to Restart or <- for Menu', this.scoreConfig).setOrigin(.5);
+            this.gameOver = true;
+        }, null, this);
+        
         this.sound.play('sfx_explosion');
     }
 }
