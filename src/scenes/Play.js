@@ -8,6 +8,7 @@ class Play extends Phaser.Scene {
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
         this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
+        this.load.image('explosion_particle', './assets/explosion_particle.png');
     }
 
     create() {
@@ -62,6 +63,19 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(.5);
             this.gameOver = true;
         }, null, this);
+        
+        // explosion particles
+        this.particleEmitter = this.add.particles(0, 0, 'explosion_particle', {
+            frequency: -1, // put in explode mode
+            speed: 200,
+            lifespan: 200,
+            bounds: {
+                x: borderUISize,
+                y: borderUISize + borderPadding + borderUISize * 2,
+                width: game.config.width - 2 * borderUISize,
+                height: game.config.height - borderUISize - (borderUISize + borderPadding + borderUISize * 2),
+            }
+        })
     }
 
     update() {
@@ -108,6 +122,8 @@ class Play extends Phaser.Scene {
 
     shipExplode(ship) {
         ship.alpha = 0;
+        
+        this.particleEmitter.explode(15, ship.x, ship.y)
 
         let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
         boom.anims.play('explode');
