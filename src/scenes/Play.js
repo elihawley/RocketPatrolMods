@@ -10,9 +10,12 @@ class Play extends Phaser.Scene {
         this.load.image('starfield', './assets/starfield.png');
         this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
         this.load.image('explosion_particle', './assets/explosion_particle.png');
+        this.load.audio('sfx_menu','./assets/menu_music.wav');
     }
 
     create() {
+        let mmusic = this.sound.add("sfx_menu", {volume: 1, loop: true});
+        mmusic.play()
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
 
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
@@ -150,7 +153,7 @@ class Play extends Phaser.Scene {
 
     shipExplode(ship) {
         ship.alpha = 0;
-        
+        console.log("hi");
         this.particleEmitter.explode(15, ship.x, ship.y)
 
         let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
@@ -172,6 +175,20 @@ class Play extends Phaser.Scene {
             this.gameOver = true;
         }, null, this);
         
-        this.sound.play('sfx_explosion');
+        let eChoice = Math.floor(Math.random() * 4);
+        console.log(eChoice);
+        console.log(typeof eChoice);
+        if (eChoice === 0) {
+            this.sound.play('sfx_explosion1');
+        }
+        else if (eChoice === 1) {
+            this.sound.play('sfx_explosion2');
+        }
+        else if (eChoice === 2) {
+            this.sound.play('sfx_explosion3');
+        }
+        else {
+            this.sound.play('sfx_explosion4');
+        }
     }
 }
