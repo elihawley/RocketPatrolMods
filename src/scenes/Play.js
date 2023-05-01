@@ -6,6 +6,7 @@ class Play extends Phaser.Scene {
     preload() {
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
+        this.load.image('fastship', './assets/ship2.png');
         this.load.image('starfield', './assets/starfield.png');
         this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
         this.load.image('explosion_particle', './assets/explosion_particle.png');
@@ -24,7 +25,7 @@ class Play extends Phaser.Scene {
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(.5, 0);
         this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 4, 'spaceship', 0, 30).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 5 + borderPadding * 2, 'spaceship', 0, 20).setOrigin(0, 0);
-        this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 + borderPadding * 4, 'spaceship', 0, 10).setOrigin(0, 0);
+        this.ship03 = new Ship2(this, game.config.width, borderUISize * 6 + borderPadding * 4, 'fastship', 0, 10).setOrigin(0, 0);
 
 
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
