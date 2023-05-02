@@ -3,7 +3,8 @@
 // Took around 8 hours to complete
 // The mods I chose: create 4 new explosion sounds (10 points), create a new enemy spaceship (15 points),
 // add time for successful hits (15 points), display remaining time on screen (10 points), 
-// PARTICLE EXPLOSION (15 points), mouse control (15 points), background music (5 points)
+// PARTICLE EXPLOSION (15 points), mouse control (15 points), background music (5 points), fire text (5 points),
+// title screen (10 points)
 let config = {
     type: Phaser.AUTO,
     width: 640,

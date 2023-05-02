@@ -10,14 +10,14 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_explosion2', './assets/explosion2.wav');
         this.load.audio('sfx_explosion3', './assets/explosion3.wav');
         this.load.audio('sfx_explosion4', './assets/explosion4.wav');
+        this.load.image('cat', './assets/141030105303-kiki-irpt.png');
     }
 
     create() {
         let menuConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            fontFamily: 'Georgia',
+            fontSize: '20px',
+            color: '#f7180c',
             align: 'right',
             padding: {
                 top: 5,
@@ -26,9 +26,12 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0,
         };
 
+        this.add.tileSprite(0, 0, 640, 480, 'cat').setOrigin(0, 0);
 
-        this.add.text(game.config.width / 2, game.config.height / 2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(.5);
-        this.add.text(game.config.width / 2, game.config.height / 2, 'Use <- -> arrows to move and (F) to fire', menuConfig).setOrigin(.5);
+        let t1 = this.add.text(game.config.width / 2, game.config.height / 2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(.5);
+        let t2 = this.add.text(game.config.width / 2, game.config.height / 2, 'Use <- -> arrows to move and (F) to fire', menuConfig).setOrigin(.5);
+        t1.dirty = true;
+        t2.dirty = true;
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
         this.add.text(game.config.width / 2, game.config.height / 2 + borderUISize + borderPadding, 'Press <- for Novice or -> for Expert', menuConfig).setOrigin(.5);

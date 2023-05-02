@@ -56,7 +56,21 @@ class Play extends Phaser.Scene {
             fixedWidth: 100,
         };
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, this.scoreConfig);
-
+        
+        this.fireConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100,
+        };
+        this.fireText = this.add.text(borderUISize + borderPadding * 2 + 100, borderUISize + borderPadding * 2, 'FIRE', this.fireConfig);
+        this.fireText.alpha = 0;
         // game over
         this.gameOver = false;
 
@@ -124,6 +138,12 @@ class Play extends Phaser.Scene {
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
+        }
+
+        if (this.p1Rocket.isFiring) {
+            this.fireText.alpha = 1;
+        } else {
+            this.fireText.alpha = 0;
         }
 
         if (this.checkCollision(this.p1Rocket, this.ship03)) {
